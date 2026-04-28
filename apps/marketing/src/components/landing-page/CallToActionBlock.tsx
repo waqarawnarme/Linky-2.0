@@ -23,9 +23,14 @@ import preview21 from '@/assets/landing-page/previews/21.png';
 import preview22 from '@/assets/landing-page/previews/22.png';
 import preview23 from '@/assets/landing-page/previews/23.png';
 import { ArrowRightIcon } from '@heroicons/react/24/solid';
-import { LoginWidget } from '@trylinky/common';
 import { Button, cn } from '@trylinky/ui';
 import Image from 'next/image';
+import Link from 'next/link';
+
+// Editor route — no auth required to open it.
+const EDITOR_URL = process.env.NEXT_PUBLIC_APP_URL
+  ? `${process.env.NEXT_PUBLIC_APP_URL}/edit`
+  : '/edit';
 
 const columns = [
   [preview1, preview8, preview15, preview22, preview4],
@@ -99,19 +104,16 @@ export function CallToActionBlock() {
                 placeholder="name"
                 className="bg-transparent border-0 px-0 focus:outline-none focus:ring-0 rounded-full w-full"
               />
-              <LoginWidget
-                isSignup
-                trigger={
-                  <Button
-                    variant="default"
-                    size="xl"
-                    className="font-bold flex group rounded-full px-6 md:px-10"
-                  >
-                    Claim Page
-                    <ArrowRightIcon className="w-5 h-5 ml-2 -mr-6 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:-mr-4 transition-all ease-in-out duration-200" />
-                  </Button>
-                }
-              />
+              <Link href={EDITOR_URL}>
+                <Button
+                  variant="default"
+                  size="xl"
+                  className="font-bold flex group rounded-full px-6 md:px-10"
+                >
+                  Open Editor
+                  <ArrowRightIcon className="w-5 h-5 ml-2 -mr-6 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:-mr-4 transition-all ease-in-out duration-200" />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

@@ -99,7 +99,7 @@ export default function MarketingFooter() {
           </span>
         </p>
         <Link
-          href="/i/auth/signup"
+          href="/edit"
           className="mt-2 rounded-full bg-gradient-to-r from-[#fff] to-[#eaeaea] px-8 py-3 text-base font-bold text-gray-900 shadow-lg transition-all hover:scale-105 hover:from-[#f3f3f3] hover:to-[#fff] focus:outline-none focus:ring-2 focus:ring-white/40"
         >
           Get Started Free
@@ -128,7 +128,7 @@ export default function MarketingFooter() {
                 </li>
                 <li>
                   <Link
-                    href="/i/auth/signup"
+                    href="/edit"
                     className="transition-colors hover:text-white/90"
                   >
                     Get started
