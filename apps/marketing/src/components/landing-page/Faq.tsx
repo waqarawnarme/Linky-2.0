@@ -51,11 +51,6 @@ const pricingQuestions = [
     answer:
       "Yes, you can use Linky for your clients. You would be best suited for the team plan where you can invite your teammates to manage your clients' pages. We also offer the ability to create separate team spaces for each of your clients, where you can manage their pages. Please reach out to us to discuss your needs.",
   },
-  {
-    question: 'What methods of payment do you support?',
-    answer:
-      'We use Stripe as our payment processor. They support all major credit cards, as well as a number of other country specific payment methods.',
-  },
 ];
 
 const generateFaqJsonLd = (

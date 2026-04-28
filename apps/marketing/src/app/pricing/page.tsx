@@ -1,49 +1,64 @@
 import { CallToActionBlock } from '@/components/landing-page/CallToActionBlock';
 import { FrequentlyAskedQuestions } from '@/components/landing-page/Faq';
 import { MarketingContainer } from '@/components/marketing-container';
-import { PricingTable, auth } from '@trylinky/common';
 import { Metadata } from 'next';
-import { headers } from 'next/headers';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Pricing | Linky',
-  description: 'Take Linky to the next level with one of our paid plans.',
+  description: 'Use Linky free, forever.',
 };
 
-export default async function PricingPage() {
-  const headersList = await headers();
-
-  const session = await auth.getSession({
-    fetchOptions: {
-      headers: headersList,
-    },
-  });
-
+export default function PricingPage() {
   return (
     <div className="bg-gradient-to-b from-[#f9f9f8] to-[#f5f3ea] pt-24 sm:pt-32 pb-8">
       <MarketingContainer className="text-center">
         <h1 className="text-pretty text-5xl lg:text-6xl font-black text-black tracking-tight">
-          Go Premium.
+          Simple Pricing.
         </h1>
         <p className="mt-6 text-xl font-medium text-gray-600">
-          Take Linky to the next level with one of our paid plans.
+          Use Linky free, forever — no credit card required.
         </p>
       </MarketingContainer>
+
       <section className="py-16">
-        <PricingTable isLoggedIn={!!session?.data?.session} />
+        <MarketingContainer>
+          <div className="mx-auto max-w-md rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 p-8 text-center">
+            <h2 className="text-3xl font-bold text-gray-900">Free Forever</h2>
+            <p className="mt-4 text-gray-600">
+              Everything you need for your link in bio.
+            </p>
+            <ul className="mt-8 space-y-3 text-left text-gray-700">
+              <li className="flex gap-2">
+                <span aria-hidden>✓</span>
+                <span>Unlimited links</span>
+              </li>
+              <li className="flex gap-2">
+                <span aria-hidden>✓</span>
+                <span>Custom themes</span>
+              </li>
+              <li className="flex gap-2">
+                <span aria-hidden>✓</span>
+                <span>Analytics &amp; insights</span>
+              </li>
+              <li className="flex gap-2">
+                <span aria-hidden>✓</span>
+                <span>Social integrations</span>
+              </li>
+            </ul>
+          </div>
+        </MarketingContainer>
       </section>
 
       <section className="pb-20">
         <MarketingContainer>
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-            <div className="flex flex-col items-center mb-8"></div>
             <blockquote
               className="text-2xl md:text-3xl font-semibold text-[#222] mb-8 leading-snug"
               style={{ fontVariationSettings: "'SERF' 10, 'wght' 500" }}
             >
-              "I really value how Linky compliments my aesthetic while giving me
-              the flexibility I need to showcase my work."
+              &ldquo;I really value how Linky compliments my aesthetic while
+              giving me the flexibility I need to showcase my work.&rdquo;
             </blockquote>
             <div className="flex items-center gap-3 mt-4">
               <Image
