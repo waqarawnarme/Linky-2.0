@@ -54,7 +54,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 }
 
 const generateBlogSitemap = async (baseUrl: string) => {
-  const blogPosts = await getBlogPosts();
+  // Hygraph CMS is optional during deployment — if HYGRAPH_ENDPOINT/HYGRAPH_TOKEN
+  // aren't configured, swallow the error and return only the static blog index page.
+  let blogPosts: Awaited<ReturnType<typeof getBlogPosts>> = [];
+  try {
+    blogPosts = await getBlogPosts();
+  } catch (err) {
+    console.warn('[sitemap] Skipping blog posts — CMS not configured:', err);
+  }
 
   const blogSitemap = blogPosts.map((post) => ({
     url: `${baseUrl}/i/blog/${post.slug}`,
