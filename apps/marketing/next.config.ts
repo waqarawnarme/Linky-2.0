@@ -9,71 +9,27 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
-  // Restored: basePath '/i' is what the original repo uses. We add a Vercel
-  // rewrite below (vercel.json) to send "/" to "/i/" so the public URL works.
-  basePath: '/i',
-  experimental: {
-    manualClientBasePath: true,
-  },
-  // Don't fail the build on ESLint or TypeScript errors — Vercel was tripping on
-  // a flat-config parser shape and a missing @types/mdx that we patch separately.
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // Skip ESLint/TS checks during build - flat-config parser bug + missing types
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
+
+  // Workspace packages need transpiling for Next.js
   transpilePackages: ['@trylinky/ui', '@trylinky/common'],
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   sassOptions: {
     silenceDeprecations: ['legacy-js-api'],
   },
+
+  // Allow images from these CDNs
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.dev.lin.ky',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.lin.ky',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.dev.glow.as',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.glow.as',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'glow.as',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'lin.ky',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'eu-west-2.graphassets.com',
-        port: '',
-      },
-      ...(process.env.NODE_ENV === 'development'
-        ? [
-            {
-              protocol: 'http' as const,
-              hostname: 'localhost',
-              port: '3000',
-            },
-          ]
-        : []),
+      { protocol: 'https', hostname: 'cdn.dev.lin.ky' },
+      { protocol: 'https', hostname: 'cdn.lin.ky' },
+      { protocol: 'https', hostname: 'cdn.dev.glow.as' },
+      { protocol: 'https', hostname: 'cdn.glow.as' },
+      { protocol: 'https', hostname: 'glow.as' },
+      { protocol: 'https', hostname: 'lin.ky' },
+      { protocol: 'https', hostname: 'eu-west-2.graphassets.com' },
     ],
   },
 };
