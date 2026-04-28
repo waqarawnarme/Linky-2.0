@@ -1,7 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "installCommand": "cd ../.. && pnpm install --frozen-lockfile=false",
-  "buildCommand": "cd ../.. && pnpm --filter @trylinky/marketing run build:marketing",
-  "outputDirectory": ".next"
+  "framework": "nextjs"
 }
