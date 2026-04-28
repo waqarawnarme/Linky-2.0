@@ -9,22 +9,34 @@ export type LearnPost = {
 } & LearnPostMetadata;
 
 export async function getLearnPosts(): Promise<LearnPost[]> {
-  const slugs = (
-    await readdir(path.join(process.cwd(), './src/app/learn/(learnPosts)'), {
-      withFileTypes: true,
-    })
-  ).filter((dirent) => dirent.isDirectory());
+  // Resilient: if the (learnPosts) dir is missing or any MDX import fails,
+  // return an empty list so callers don't crash the page or sitemap build.
+  try {
+    const slugs = (
+      await readdir(path.join(process.cwd(), './src/app/learn/(learnPosts)'), {
+        withFileTypes: true,
+      })
+    ).filter((dirent) => dirent.isDirectory());
 
-  const posts = await Promise.all(
-    slugs.map(async ({ name }) => {
-      const { metadata } = await import(`./(learnPosts)/${name}/page.mdx`);
-      return { slug: name, ...metadata };
-    })
-  );
+    const posts = await Promise.all(
+      slugs.map(async ({ name }) => {
+        try {
+          const { metadata } = await import(`./(learnPosts)/${name}/page.mdx`);
+          return { slug: name, ...metadata };
+        } catch (err) {
+          console.warn(`[getLearnPosts] Skipping ${name}:`, err);
+          return null;
+        }
+      })
+    );
 
-  posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate));
-
-  return posts;
+    return posts
+      .filter((p): p is LearnPost => p !== null)
+      .sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate));
+  } catch (err) {
+    console.warn('[getLearnPosts] Returning empty list:', err);
+    return [];
+  }
 }
 
 export async function getLearnPostBySlug(
