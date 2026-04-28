@@ -9,11 +9,11 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
-  // basePath removed so the marketing site serves at "/" on Vercel.
-  // Original repo used basePath: '/i' because lin.ky reverse-proxies
-  // the marketing app under /i/. We don't need that for Vercel.
+  // Restored: basePath '/i' is what the original repo uses. We add a Vercel
+  // rewrite below (vercel.json) to send "/" to "/i/" so the public URL works.
+  basePath: '/i',
   experimental: {
-    manualClientBasePath: false,
+    manualClientBasePath: true,
   },
   // Don't fail the build on ESLint or TypeScript errors — Vercel was tripping on
   // a flat-config parser shape and a missing @types/mdx that we patch separately.
