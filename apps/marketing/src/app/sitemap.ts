@@ -43,14 +43,21 @@ const baseSitemap = [
   },
 ];
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogSitemap = await generateBlogSitemap(baseUrl);
-  const learnSitemap = await generateLearnSitemap(baseUrl);
+  // Outer try/catch: if anything goes wrong dynamically generating the sitemap,
+  // never crash the build — just return the static base sitemap.
+  try {
+    const blogSitemap = await generateBlogSitemap(baseUrl);
+    const learnSitemap = await generateLearnSitemap(baseUrl);
 
-  return [
-    ...baseSitemap,
-    ...blogSitemap,
-    ...learnSitemap,
-  ] as MetadataRoute.Sitemap;
+    return [
+      ...baseSitemap,
+      ...blogSitemap,
+      ...learnSitemap,
+    ] as MetadataRoute.Sitemap;
+  } catch (err) {
+    console.warn('[sitemap] Falling back to base sitemap:', err);
+    return baseSitemap as MetadataRoute.Sitemap;
+  }
 }
 
 const generateBlogSitemap = async (baseUrl: string) => {
@@ -82,7 +89,14 @@ const generateBlogSitemap = async (baseUrl: string) => {
 };
 
 const generateLearnSitemap = async (baseUrl: string) => {
-  const posts = await getLearnPosts();
+  // Learn posts are MDX files dynamically imported at build time; if the directory
+  // is missing or imports fail in the Vercel runtime, fall back to just the index page.
+  let posts: Awaited<ReturnType<typeof getLearnPosts>> = [];
+  try {
+    posts = await getLearnPosts();
+  } catch (err) {
+    console.warn('[sitemap] Skipping learn posts — could not load MDX:', err);
+  }
 
   const postsSitemap = posts.map((post) => ({
     url: `${baseUrl}/i/learn/${post.slug}`,
