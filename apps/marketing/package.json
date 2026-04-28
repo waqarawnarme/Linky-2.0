@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@graphcms/rich-text-types": "^0.5.1",
+    "@types/mdx": "^2.0.13",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "autoprefixer": "^10.4.20",
