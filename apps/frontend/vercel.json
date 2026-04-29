@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && pnpm --filter @trylinky/prisma run prisma:generate && pnpm --filter @trylinky/tinybird run build:tracker && pnpm --filter @trylinky/frontend run copy-tinybird-tracker && pnpm --filter @trylinky/frontend run build:frontend",
+  "installCommand": "cd ../.. && NODE_ENV=development pnpm install --no-frozen-lockfile --config.production=false"
+}
