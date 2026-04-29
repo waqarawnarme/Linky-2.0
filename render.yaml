@@ -1,117 +1,41 @@
-databases:
-  - name: glow-db
-    databaseName: glow_szcw
-    user: glow_szcw_user
-    plan: basic-256mb
-    region: frankfurt
-    ipAllowList:
-      - source: 0.0.0.0/0
-        description: everywhere
-    postgresMajorVersion: '16'
-    diskSizeGB: 1
 services:
   - type: web
-    name: glow-api
+    name: linky-api
     runtime: node
-    repo: https://github.com/trylinky/linky
-    plan: starter
+    plan: free
+    region: oregon
+    rootDir: apps/api
+    buildCommand: |
+      cd ../.. && \
+      corepack enable && \
+      corepack prepare pnpm@9.15.0 --activate && \
+      pnpm install --no-frozen-lockfile --config.production=false && \
+      pnpm --filter @trylinky/prisma run prisma:generate && \
+      pnpm --filter @trylinky/prisma run prisma:migrate && \
+      pnpm --filter @trylinky/api run build:api
+    startCommand: node dist/index.js
+    autoDeploy: true
     envVars:
-      - key: INSTAGRAM_CLIENT_SECRET
-        sync: false
-      - key: INSTAGRAM_CLIENT_ID
-        sync: false
-      - key: INSTAGRAM_CALLBACK_URL
-        sync: false
-      - key: INSTAGRAM_LEGACY_CLIENT_SECRET
-        sync: false
-      - key: INSTAGRAM_LEGACY_CALLBACK_URL
-        sync: false
-      - key: TIKTOK_CALLBACK_URL
-        sync: false
-      - key: TIKTOK_CLIENT_SECRET
-        sync: false
-      - key: TIKTOK_CLIENT_KEY
-        sync: false
-      - key: INSTAGRAM_LEGACY_CLIENT_ID
-        sync: false
-      - key: THREADS_CLIENT_ID
-        sync: false
-      - key: THREADS_CLIENT_SECRET
-        sync: false
-      - key: THREADS_CALLBACK_URL
-        sync: false
-      - key: SPOTIFY_CLIENT_ID
-        sync: false
-      - key: SPOTIFY_CLIENT_SECRET
-        sync: false
-      - key: SPOTIFY_REDIRECT_URL
-        sync: false
-      - key: APP_FRONTEND_URL
-        sync: false
-      - key: ENCRYPTION_KEY
-        sync: false
-      - key: STRIPE_API_SECRET_KEY
-        sync: false
-      - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-      - key: POSTHOG_API_KEY
-        sync: false
+      - key: NODE_ENV
+        value: production
       - key: APP_ENV
-        sync: false
-      - key: AWS_ACCESS_KEY_ID
-        sync: false
-      - key: AWS_SECRET_ACCESS_KEY
-        sync: false
-      - key: AWS_REGION
-        sync: false
-      - key: REACTIONS_TABLE_NAME
+        value: production
+      - key: AUTH_TRUST_HOST
+        value: "true"
+      - key: APP_FRONTEND_URL
+        value: https://linky-2-0-frontend.vercel.app
+      - key: DATABASE_URL
         sync: false
       - key: DIRECT_URL
-        fromDatabase:
-          name: linky-production
-          property: connectionString
-      - key: DATABASE_URL
-        fromDatabase:
-          name: linky-production
-          property: connectionString
-      - key: SENTRY_DSN
-        sync: false
-      - key: SENTRY_AUTH_TOKEN
-        sync: false
-      - key: PORT
-        sync: false
-      - key: NODE_ENV
-        sync: false
-      - key: AUTH_TRUST_HOST
         sync: false
       - key: AUTH_SECRET
         sync: false
-      - key: TINYBIRD_API_KEY
+      - key: ENCRYPTION_KEY
         sync: false
-      - key: SCREENSHOT_API_KEY
+      - key: INTERNAL_API_KEY
         sync: false
-      - key: AUTH_GOOGLE_CLIENT_ID
+      - key: BETTER_AUTH_URL
         sync: false
-      - key: AUTH_GOOGLE_CLIENT_SECRET
+      - key: API_BASE_URL
         sync: false
-      - key: AUTH_TIKTOK_CLIENT_ID
-        sync: false
-      - key: AUTH_TIKTOK_CLIENT_KEY
-        sync: false
-      - key: AUTH_TIKTOK_CLIENT_SECRET
-        sync: false
-      - key: AUTH_TWITTER_CLIENT_ID
-        sync: false
-      - key: AUTH_TWITTER_CLIENT_SECRET
-        sync: false
-      - key: RESEND_API_KEY
-        sync: false
-
-    region: frankfurt
-    buildCommand:
-      npm install && turbo run prisma:migrate prisma:generate --filter=@trylinky/prisma && turbo run build:api
-      --filter=@trylinky/api
-    startCommand: turbo run start:api
-    domains:
-      - api.lin.ky
-version: '1'
+version: "1"
