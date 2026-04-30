@@ -10,7 +10,6 @@ import { authenticateDecorator } from '@/decorators/authenticate';
 import { trustedOrigins } from '@/lib/origins';
 import analyticsRoutes from '@/modules/analytics';
 import assetsRoutes from '@/modules/assets';
-import billingRoutes from '@/modules/billing';
 import flagsRoutes from '@/modules/flags';
 import integrationsRoutes from '@/modules/integrations';
 import orchestratorsRoutes from '@/modules/orchestrators';
@@ -73,7 +72,7 @@ fastify.register(orchestratorsRoutes, { prefix: '/orchestrators' });
 fastify.register(analyticsRoutes, { prefix: '/analytics' });
 fastify.register(flagsRoutes, { prefix: '/flags' });
 fastify.register(organizationsRoutes, { prefix: '/organizations' });
-fastify.register(billingRoutes, { prefix: '/billing' });
+// billing routes removed — Stripe excised from this fork
 
 fastify.register(tiktokServiceRoutes as any, { prefix: '/services/tiktok' });
 fastify.register(instagramServiceRoutes, { prefix: '/services/instagram' });

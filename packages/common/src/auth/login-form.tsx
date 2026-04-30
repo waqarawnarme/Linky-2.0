@@ -74,7 +74,7 @@ export function LoginForm({
           className="mt-2 md:mt-0"
           redirectTo={redirectTo}
         />
-        <LoginProviderButton provider="google" redirectTo={redirectTo} />
+        {/* Google provider removed from this fork */}
         <LoginProviderButton provider="tiktok" redirectTo={redirectTo} />
       </div>
     </div>
